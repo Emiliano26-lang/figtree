@@ -1,0 +1,40 @@
+name: Build Typeface with Greek Support
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-fonts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install fontmake fontbakery gftools
+
+      - name: Build fonts
+        run: |
+          fontmake -m figtree.designspace -o variable --output-dir fonts/
+      
+      - name: Validate Greek coverage
+        run: |
+          python scripts/validate_greek.py fonts/Figtree[wght].ttf
+
+      - name: Run FontBakery checks
+        run: |
+          fontbakery check-universal fonts/Figtree[wght].ttf
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: greek-font-build
+          path: fonts/
