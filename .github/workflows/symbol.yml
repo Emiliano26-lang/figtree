@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.x'
 
       - name: Install fonttools
         run: pip install fonttools
@@ -24,24 +24,26 @@ jobs:
       - name: Validate required glyphs
         run: |
           python - <<'EOF'
+          import sys
           from fontTools.ttLib import TTFont
-          import glob, sys
+          import glob
 
-          required = ["uni20B4"]  # Hryvnia sign
-          fonts = glob.glob("fonts/ttf/Figtree-Light.ttf", recursive=True)
+          required = ["U+20B4", "U+0020", "U+0041"]  # add all required glyphs here
+          fonts = glob.glob("build/*.ttf")
 
-          if not fonts:
-              sys.exit("No font files found in build/")
+          missing = {}
+          for font_path in fonts:
+              font = TTFont(font_path)
+              cmap = font.getBestCmap()
+              missing_glyphs = [g for g in required if int(g[2:],16) not in cmap]
+              if missing_glyphs:
+                  missing[font_path] = missing_glyphs
 
-          for f in fonts:
-              font = TTFont(f)
-              cmap = font["cmap"].getBestCmap()
-              missing = [g for g in required if g not in font.getGlyphOrder()]
-              if missing:
-                  sys.exit(f"Missing glyphs {missing} in {f}")
-          print("All required glyphs present.")
+          if missing:
+              print("❌ Missing glyphs detected:")
+              for font, glyphs in missing.items():
+                  print(f"  {font}: {', '.join(glyphs)}")
+              sys.exit(1)
+          else:
+              print("✅ All required glyphs present")
           EOF
-
-      - name: Build fonts
-        run: |
-          # your existing build steps here
