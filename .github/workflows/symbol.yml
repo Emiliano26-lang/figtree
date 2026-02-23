@@ -28,7 +28,7 @@ jobs:
           import glob, sys
 
           required = ["uni20B4"]  # Hryvnia sign
-          fonts = glob.glob("fonts/ttf/*.ttf", recursive=True)
+          fonts = glob.glob("fonts/ttf/Figtree-Light.ttf", recursive=True)
 
           if not fonts:
               sys.exit("No font files found in build/")
