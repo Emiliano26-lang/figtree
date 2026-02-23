@@ -64,7 +64,7 @@ jobs:
       - name: Build fonts
         run: |
           mkdir -p build
-          fontmake -m sources/YourDesignspace.designspace -o ttf --output-dir build
+          fontmake -m sources/master_ufo/Figtree.designspace -o ttf --output-dir build
 
       - name: Upload built fonts
         uses: actions/upload-artifact@v4
