@@ -20,8 +20,8 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install fonttools
-        run: pip install fonttools
+      - name: Install fonttools and fontmake
+        run: pip install fonttools fontmake
 
       - name: Validate required glyphs
         run: |
@@ -30,9 +30,7 @@ jobs:
           from fontTools.ttLib import TTFont
           import glob
 
-          # Define required glyphs (expand this list as needed)
-          required = ["U+20B4", "U+0020", "U+0041"]
-
+          required = ["U+20B4", "U+0020", "U+0041"]  # expand as needed
           fonts = glob.glob("build/*.ttf")
           missing = {}
 
@@ -54,9 +52,8 @@ jobs:
 
       - name: Build fonts
         run: |
-          # Replace with your actual build command
           mkdir -p build
-          echo "Simulating font build..." > build/figtree_updated.ttf
+          fontmake -m sources/master_ufo/Figtree.designspace -o ttf --output-dir build
 
       - name: Upload built fonts
         uses: actions/upload-artifact@v4
