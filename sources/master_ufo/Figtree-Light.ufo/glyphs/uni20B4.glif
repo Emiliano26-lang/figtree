@@ -1,1 +1,14 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="uni20B4" format="2">
+  <advance width="600"/>
+  <unicode hex="20B4"/>
+  <outline>
+    <!-- Simple placeholder rectangle -->
+    <contour>
+      <point x="100" y="100" type="move"/>
+      <point x="500" y="100" type="line"/>
+      <point x="500" y="500" type="line"/>
+      <point x="100" y="500" type="line"/>
+    </contour>
+  </outline>
+</glyph>
