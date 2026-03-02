@@ -798,6 +798,8 @@
     <string>ugrave.glif</string>
     <key>uhungarumlaut</key>
     <string>uhungarumlaut.glif</string>
+    <key>uni20B4</key>
+    <string>uni20B4.glif</string>
     <key>umacron</key>
     <string>umacron.glif</string>
     <key>underscore</key>
